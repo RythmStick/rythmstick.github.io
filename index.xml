@@ -2,31 +2,31 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>RythmStick</title>
-    <link>http://www.rythmstick.net/</link>
+    <link>https://www.rythmstick.net/</link>
     <description>Recent content on RythmStick</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 11 Jun 2019 22:18:15 +0100</lastBuildDate>
     
-	<atom:link href="http://www.rythmstick.net/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.rythmstick.net/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title>CVE-2019-1064 AppXSVC Local Privilege Escalation</title>
-      <link>http://www.rythmstick.net/posts/cve-2019-1064/</link>
+      <link>https://www.rythmstick.net/posts/cve-2019-1064/</link>
       <pubDate>Tue, 11 Jun 2019 22:18:15 +0100</pubDate>
       
-      <guid>http://www.rythmstick.net/posts/cve-2019-1064/</guid>
+      <guid>https://www.rythmstick.net/posts/cve-2019-1064/</guid>
       <description>Intro Security researcher SandboxEscaper dropped a zero-day this week exploiting a race condition in the Windows AppX Deployment Service (AppXSVC). This was due to the service not handling hard links properly. Another zero-day (CVE-2019-0841) affecting the same service was previously fixed in April.
 As Microsoft have now provided a fix for this in June&amp;rsquo;s Patch Tuesday updates, I&amp;rsquo;ve ported SandboxEscaper&amp;rsquo;s original PoC to C# (thanks to Rastamouse for C# hand holding).</description>
     </item>
     
     <item>
       <title>Lighting the path through EDRs using TikiTorch</title>
-      <link>http://www.rythmstick.net/posts/tikitorch/</link>
+      <link>https://www.rythmstick.net/posts/tikitorch/</link>
       <pubDate>Sun, 03 Mar 2019 13:23:10 +0100</pubDate>
       
-      <guid>http://www.rythmstick.net/posts/tikitorch/</guid>
+      <guid>https://www.rythmstick.net/posts/tikitorch/</guid>
       <description>Intro A quick practical demonstration of using Rastamouse&amp;rsquo;s TikiTorch to bypass Endpoint protection, in this case a trial version of Sophos Intercept X (&amp;ldquo;Now with EDR&amp;rdquo;). For this demo we&amp;rsquo;ll be trying to run a 64 bit staged meterpreter reverse shell on a Windows 10 target.
 Before we start, we&amp;rsquo;ll try to do it the old way to see how far we can get. Let&amp;rsquo;s generate a windows binary, download it using a browser and run it.</description>
     </item>
