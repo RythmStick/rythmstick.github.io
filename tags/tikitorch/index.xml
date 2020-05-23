@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tikitorch on RythmStick</title>
+    <link>http://www.rythmstick.net/tags/tikitorch/</link>
+    <description>Recent content in Tikitorch on RythmStick</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sun, 03 Mar 2019 13:23:10 +0100</lastBuildDate>
+    
+	<atom:link href="http://www.rythmstick.net/tags/tikitorch/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Lighting the path through EDRs using TikiTorch</title>
+      <link>http://www.rythmstick.net/posts/tikitorch/</link>
+      <pubDate>Sun, 03 Mar 2019 13:23:10 +0100</pubDate>
+      
+      <guid>http://www.rythmstick.net/posts/tikitorch/</guid>
+      <description>Intro A quick practical demonstration of using Rastamouse&amp;rsquo;s TikiTorch to bypass Endpoint protection, in this case a trial version of Sophos Intercept X (&amp;ldquo;Now with EDR&amp;rdquo;). For this demo we&amp;rsquo;ll be trying to run a 64 bit staged meterpreter reverse shell on a Windows 10 target.
+Before we start, we&amp;rsquo;ll try to do it the old way to see how far we can get. Let&amp;rsquo;s generate a windows binary, download it using a browser and run it.</description>
+    </item>
+    
+  </channel>
+</rss>

