@@ -2,39 +2,39 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Tags on RythmStick</title>
-    <link>http://www.rythmstick.net/tags/</link>
+    <link>https://www.rythmstick.net/tags/</link>
     <description>Recent content in Tags on RythmStick</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 11 Jun 2019 22:18:15 +0100</lastBuildDate>
     
-	<atom:link href="http://www.rythmstick.net/tags/index.xml" rel="self" type="application/rss+xml" />
+	<atom:link href="https://www.rythmstick.net/tags/index.xml" rel="self" type="application/rss+xml" />
     
     
     <item>
       <title></title>
-      <link>http://www.rythmstick.net/tags/</link>
+      <link>https://www.rythmstick.net/tags/</link>
       <pubDate>Tue, 11 Jun 2019 22:18:15 +0100</pubDate>
       
-      <guid>http://www.rythmstick.net/tags/</guid>
+      <guid>https://www.rythmstick.net/tags/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Edr</title>
-      <link>http://www.rythmstick.net/tags/edr/</link>
+      <link>https://www.rythmstick.net/tags/edr/</link>
       <pubDate>Sun, 03 Mar 2019 13:23:10 +0100</pubDate>
       
-      <guid>http://www.rythmstick.net/tags/edr/</guid>
+      <guid>https://www.rythmstick.net/tags/edr/</guid>
       <description></description>
     </item>
     
     <item>
       <title>Tikitorch</title>
-      <link>http://www.rythmstick.net/tags/tikitorch/</link>
+      <link>https://www.rythmstick.net/tags/tikitorch/</link>
       <pubDate>Sun, 03 Mar 2019 13:23:10 +0100</pubDate>
       
-      <guid>http://www.rythmstick.net/tags/tikitorch/</guid>
+      <guid>https://www.rythmstick.net/tags/tikitorch/</guid>
       <description></description>
     </item>
     
