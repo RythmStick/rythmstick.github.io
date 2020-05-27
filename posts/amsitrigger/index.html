@@ -1,0 +1,124 @@
+<!doctype html>
+<html>
+  <head>
+    <title>AmsiTrigger // RythmStick</title>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.47.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="RythmStick" />
+    <meta name="description" content="" />
+    <base href="http://www.rythmstick.net" />
+    <link rel="stylesheet" href="http://www.rythmstick.net/css/main.min.13eb48bb7c9a6423f893a6444070cabd7a257bb41b0ffe018d2d2142d741553b.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="/"><img class="app-header-avatar" src="./me.png" /></a>
+      <h1>RythmStick</h1>
+      <p>Application Penetration Tester, Beginner Bug Bounty Hunter.</p>
+      <div class="app-header-social">
+        
+          <a target="_blank" href="https://github.com/RythmStick"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg></a>
+        
+          <a target="_blank" href="https://twitter.com/_RythmStick"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg></a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">AmsiTrigger</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          May 26, 2020
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          2 min read
+        </div></div>
+    </header>
+    <div class="post-content">
+      
+
+<h3 id="intro">Intro</h3>
+
+<p>I recently came across a situation where some offensive powershell tools which I&rsquo;ve used quite often, are now eventually being flagged as malicious by Windows Defender.
+Now in this situation, there&rsquo;s a number of options: I could use something like [Invoke-Obfuscation][<a href="https://github.com/danielbohannon/Invoke-Obfuscation">https://github.com/danielbohannon/Invoke-Obfuscation</a>] to play around with functions/strings etc, I could do this manually using trial and error or I could use one of the AMSI [bypasses][<a href="https://github.com/rasta-mouse/AmsiScanBufferBypass">https://github.com/rasta-mouse/AmsiScanBufferBypass</a>] that are available. Sometimes though, it would be nice to know exactly what triggered it, which is why I wrote [AMSITrigger][<a href="https://github.com/RythmStick/MailSniper">https://github.com/RythmStick/MailSniper</a>] .</p>
+
+<p>[AMSITrigger][<a href="https://github.com/RythmStick/MailSniper">https://github.com/RythmStick/MailSniper</a>] will scan a powershell file and will repeatedly send lines of code to the AntiMalware Scan Interface using [AmsiScanBuffer][<a href="https://docs.microsoft.com/en-us/windows/win32/api/amsi/nf-amsi-amsiscanbuffer">https://docs.microsoft.com/en-us/windows/win32/api/amsi/nf-amsi-amsiscanbuffer</a>]. On successfully generating an AMSI_RESULT_DETECTED return code, it will then delve deeper into the individual strings in that line to look for specific triggers.</p>
+
+<p>###Usage</p>
+
+<pre><code>_    __  __ ____ ___ _____     _
+/ \  |  \/  / ___|_ _|_   _| __(_) __ _  __ _  ___ _ __
+</code></pre>
+
+<p>/ _ \ | |\/| ___ | |  | || &lsquo;<strong>| |/ _<code>|/ _</code> |/ _ \ &lsquo;</strong>|
+  / ___ | |  | |__<em>) | |  | || |  | | (</em>| | (_| |  <strong>/ |
+ /<em>/   __|  |</em>|</strong><strong>/</strong><em>| |</em>||<em>|  |</em>|_<em>, |_</em>, |_<strong>|_|
+                                      |</strong>_/ |___/
+@_RythmStick</p>
+
+<p>Usage:
+  -i, &ndash;inputfile=VALUE      Filename
+  -f, &ndash;format=VALUE         Output Format:
+                               1 - Only show Triggers
+                               2 - Show Triggers with line numbers and columns
+                               3 - Show Triggers inline with code
+                               4 - Show AMSI calls (xmas tree mode)
+  -m, &ndash;max=VALUE            Maximum Line Length (default 2048)
+  -h, -?, &ndash;help             Show Help</p>
+
+<h3 id="examples">Examples</h3>
+
+<p>Show Triggers in Invoke-Mimikatz.ps1 with Line Numbers and Columns:</p>
+
+<p><img src="demo1.gif" alt="screenshot" /></p>
+
+<p>Show Triggers inline with code:</p>
+
+<p><img src="demo2.gif" alt="screenshot" /></p>
+
+<h3 id="todo">ToDo</h3>
+
+<p>AMSITrigger currently only works against Powershell files. I will look at extending this to VBScript, Java etc</p>
+
+<p><br>
+AMSITrigger available  has a number of other assemblies. Check out the GitHub <a href="https://rastamouse.me/2019/03/tikitorch">Repo</a> for more details.</p>
+
+    </div>
+    <br><br><br><br>
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "rythmstick" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </article>
+
+    </main>
+  </body>
+</html>
