@@ -43,7 +43,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
   <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
 </svg>
-          2 min read
+          3 min read
         </div></div>
     </header>
     <div class="post-content">
@@ -55,10 +55,20 @@
 
 <p>I recently came across a situation where some offensive powershell tools which I’ve used quite often, are now eventually being flagged as malicious. In this case it was Windows Defender, although AMSI (AntiMalware Scan  Interface) is agnostic of animalware product so it could easily be something different.
 <br><br>
-In this situation, there’s a number of options available. I could use something like <a href="https://github.com/danielbohannon/Invoke-Obfuscation">Invoke-Obfuscation</a> to play around with functions/strings etc, I could do this manually using trial and error or I could use one of the AMSI <a href="https://github.com/rasta-mouse/AmsiScanBufferBypass">bypasses</a> that are available. Sometimes though, it would be just nice to know exactly what triggered it, which is why I wrote AMSITrigger.
+In this situation, there’s a number of options aavailable. I could use something like <a href="https://github.com/danielbohannon/Invoke-Obfuscation">Invoke-Obfuscation</a> to play around with functions/strings etc, I could do this manually using trial and error or I could use one of the AMSI <a href="https://github.com/rasta-mouse/AmsiScanBufferBypass">bypasses</a> that are available. Sometimes though, it would be just nice to know exactly what triggered it, which is why I wrote AMSITrigger.
 <br><br></p>
 
 <p><a href="https://github.com/RythmStick/AMSITrigger">AMSITrigger</a> will identify all of the malicious strings in a powershell file, by repeatedly making calls to AMSI using AMSIScanBuffer, line by line. On receiving an AMSI_RESULT_DETECTED response code, the line will then be scrutinised to identify the individual triggers.</p>
+
+<p><br><br></p>
+
+<h3 id="v2-update">V2 Update:</h3>
+
+<p>I&rsquo;ve had to change the logic slightly so instead of scanning line by line, I&rsquo;m now using data chunks. This has made trigger identification more accurate with only a slight tradeoff in execution time.</p>
+
+<p>I&rsquo;ve also added an extra parameter to load the powershell directly from a URL, for 2 reasons:
+    It&rsquo;s not always possible to match your lab environment with your target environment. Maybe your signatures are not sync&rsquo;d up or maybe its difficult matching the EDRs.
+    Also - you&rsquo;ll probably be using fileless execution so there&rsquo;s no need to drop payloads unecessarily to disk as this may cause them to be removed by the EDR.</p>
 
 <p><br><br></p>
 
@@ -78,6 +88,7 @@ In this situation, there’s a number of options available. I could use somethin
 
 Usage:
   -i, --inputfile=VALUE      Filename
+  -u, --url=VALUE        URL eg. https://10.1.1.1/Invoke-NinjaCopy.ps1
   -f, --format=VALUE         Output Format:
                                1 - Only show Triggers
                                2 - Show Triggers with line numbers
@@ -91,13 +102,19 @@ Usage:
 
 <h2 id="examples">Examples</h2>
 
-<h3 id="example-1-show-triggers-in-invoke-mimikatz-ps1-with-line-numbers-and-columns">Example 1 - Show Triggers in Invoke-Mimikatz.ps1 with Line Numbers and Columns</h3>
+<h3 id="example-1-show-triggers-in-invoke-mimikatz-ps1-using-url">Example 1 - Show Triggers in Invoke-Mimikatz.ps1 using URL</h3>
+
+<p><img src="demo0.png" alt="screenshot" /></p>
+
+<p><br><br></p>
+
+<h3 id="example-2-show-triggers-in-invoke-mimikatz-ps1-with-line-numbers">Example 2 - Show Triggers in Invoke-Mimikatz.ps1 with Line Numbers</h3>
 
 <p><img src="demo1.gif" alt="screenshot" /></p>
 
 <p><br><br></p>
 
-<h3 id="example-2-show-triggers-inline-with-code">Example 2 - Show Triggers inline with code</h3>
+<h3 id="example-3-show-triggers-inline-with-code">Example 3 - Show Triggers inline with code</h3>
 
 <p><img src="demo2.gif" alt="screenshot" /></p>
 
@@ -120,9 +137,9 @@ Check out the GitHub <a href="https://github.com/RythmStick/AMSITrigger">Repo</a
 
 <p>Calling AMSI Scan functions:<br>
 <a href="https://medium.com/@two06/amsi-as-a-service-automating-av-evasion-2e2f54397ff9">https://medium.com/@two06/amsi-as-a-service-automating-av-evasion-2e2f54397ff9</a>
-<a href="https://stackoverflow.com/questions/40888849/windows-defender-antivirus-scan-from-c-sharp-accessviolation-exception">https://stackoverflow.com/questions/40888849/windows-defender-antivirus-scan-from-c-sharp-accessviolation-exception</a>.</p>
-
-<p><br></p>
+<a href="https://stackoverflow.com/questions/40888849/windows-defender-antivirus-scan-from-c-sharp-accessviolation-exception">https://stackoverflow.com/questions/40888849/windows-defender-antivirus-scan-from-c-sharp-accessviolation-exception</a>.
+Thanks to <a href="https://twitter.com/ShitSecure">S3cur3Th1sSh1t</a> for details on multi-line signatures.
+<br></p>
 
     </div>
     <br><br><br><br>

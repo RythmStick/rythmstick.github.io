@@ -6,10 +6,19 @@
     <description>Recent content on RythmStick</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 11 Jun 2019 22:18:15 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 26 May 2020 16:05:23 +0000</lastBuildDate>
     
 	<atom:link href="https://www.rythmstick.net/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Hunting for malicious strings using AmsiTrigger</title>
+      <link>https://www.rythmstick.net/posts/amsitrigger/</link>
+      <pubDate>Tue, 26 May 2020 16:05:23 +0000</pubDate>
+      
+      <guid>https://www.rythmstick.net/posts/amsitrigger/</guid>
+      <description>Introduction I recently came across a situation where some offensive powershell tools which I’ve used quite often, are now eventually being flagged as malicious. In this case it was Windows Defender, although AMSI (AntiMalware Scan Interface) is agnostic of animalware product so it could easily be something different. In this situation, there’s a number of options aavailable. I could use something like Invoke-Obfuscation to play around with functions/strings etc, I could do this manually using trial and error or I could use one of the AMSI bypasses that are available.</description>
+    </item>
     
     <item>
       <title>CVE-2019-1064 AppXSVC Local Privilege Escalation</title>

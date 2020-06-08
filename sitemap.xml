@@ -3,6 +3,11 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
+    <loc>https://www.rythmstick.net/posts/amsitrigger/</loc>
+    <lastmod>2020-05-26T16:05:23+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://www.rythmstick.net/posts/cve-2019-1064/</loc>
     <lastmod>2019-06-11T22:18:15+01:00</lastmod>
   </url>
@@ -31,13 +36,13 @@
   
   <url>
     <loc>https://www.rythmstick.net/posts/</loc>
-    <lastmod>2019-06-11T22:18:15+01:00</lastmod>
+    <lastmod>2020-05-26T16:05:23+00:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>https://www.rythmstick.net/</loc>
-    <lastmod>2019-06-11T22:18:15+01:00</lastmod>
+    <lastmod>2020-05-26T16:05:23+00:00</lastmod>
     <priority>0</priority>
   </url>
   
