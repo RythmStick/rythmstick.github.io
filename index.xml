@@ -6,10 +6,20 @@
     <description>Recent content on RythmStick</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 26 May 2020 16:05:23 +0000</lastBuildDate>
+    <lastBuildDate>Fri, 26 Jun 2020 22:14:45 +0000</lastBuildDate>
     
 	<atom:link href="https://www.rythmstick.net/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>SSL Blindspots for Red Teams</title>
+      <link>https://www.rythmstick.net/posts/sslblindspots/</link>
+      <pubDate>Fri, 26 Jun 2020 22:14:45 +0000</pubDate>
+      
+      <guid>https://www.rythmstick.net/posts/sslblindspots/</guid>
+      <description>Introduction The modern threat landscape requires a comprehensive defense-in-depth strategy, which often includes the interception and inspection of employee SSL-protected web traffic. As most attacks will now use some type of encryption, being able to log and inspect this content is vital.
+Due to a lack of understanding of local privacy laws many organisations will whitelist certain categories of websites, such as finance/banking and health, presenting a blindspot to blue teams/incident responders and manifests itself in a lack of detailed logging.</description>
+    </item>
     
     <item>
       <title>Hunting for malicious strings using AmsiTrigger</title>
@@ -17,7 +27,7 @@
       <pubDate>Tue, 26 May 2020 16:05:23 +0000</pubDate>
       
       <guid>https://www.rythmstick.net/posts/amsitrigger/</guid>
-      <description>Introduction I recently came across a situation where some offensive powershell tools which I’ve used quite often, are now eventually being flagged as malicious. In this case it was Windows Defender, although AMSI (AntiMalware Scan Interface) is agnostic of animalware product so it could easily be something different. In this situation, there’s a number of options aavailable. I could use something like Invoke-Obfuscation to play around with functions/strings etc, I could do this manually using trial and error or I could use one of the AMSI bypasses that are available.</description>
+      <description>Introduction I recently came across a situation where some offensive powershell tools which I’ve used quite often, are now eventually being flagged as malicious. In this case it was Windows Defender, although AMSI (AntiMalware Scan Interface) is agnostic of animalware product so it could easily be something different. In this situation, there’s a number of options available. I could use something like Invoke-Obfuscation to play around with functions/strings etc, I could do this manually using trial and error or I could use one of the AMSI bypasses that are available.</description>
     </item>
     
     <item>
