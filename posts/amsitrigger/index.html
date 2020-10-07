@@ -37,7 +37,7 @@
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
   <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
 </svg>
-          May 26, 2020
+          October 10, 2020
         </div>
         <div>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
@@ -64,7 +64,7 @@ In this situation, there’s a number of options available. I could use somethin
 
 <h3 id="v3-update">V3 Update:</h3>
 
-<p>In order to speed up the scanning process, AMSITrigger breaks a file up into smaller chunks. Being able to ignore whole chunks, reduces calls to AMSIScanBuffer but presents a few problems that can result in false-negatives ie. A clean result where you expected a trigger. <br><br>The first problem is where the signature length exceeds the chunk size. To cater for this I've included a ChunkSize parameter, which should be increased if you're getting an unexpected result. <br><br>The second problem is where a signature spans 2 consecutive chunks, which is more likely when you use smaller chunk sizes. To cater for this, I've added a maxSignatureLength parameter. This will assume that the final maxSignatureLength bytes in a chunk could be the start of truncated signature, and will prepend the next chunk with those bytes. </p>
+<p>In order to speed up the scanning process, AMSITrigger breaks a file up into smaller chunks. Being able to ignore whole chunks, reduces calls to AMSIScanBuffer but presents a few problems that can result in false-negatives ie. A clean result where you expected a trigger. <br><br>The first problem is where the signature length exceeds the chunk size. To cater for this I've included a ChunkSize parameter, which should be increased if you're getting an unexpected result. <br><br>The second problem is where a signature spans 2 consecutive chunks, which is more likely when you use smaller chunk sizes. To cater for this, I've added a maxSignatureLength parameter. This will assume that the final maxSignatureLength bytes in a chunk could be the start of a truncated signature, and will prepend the next chunk with those bytes. </p>
 
 
 <p><br><br></p>
@@ -95,7 +95,7 @@ In this situation, there’s a number of options available. I could use somethin
 
 Usage:
   -i, --inputfile=VALUE      Filename
-  -u, --url=VALUE        URL eg. https://10.1.1.1/Invoke-NinjaCopy.ps1
+  -u, --url=VALUE            URL eg. https://10.1.1.1/Invoke-NinjaCopy.ps1
   -f, --format=VALUE         Output Format:
                                1 - Only show Triggers
                                2 - Show Triggers with line numbers
