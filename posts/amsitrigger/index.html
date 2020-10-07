@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html>
   <head>
     <title>Hunting for malicious strings using AmsiTrigger // RythmStick</title>
@@ -59,6 +59,13 @@ In this situation, there’s a number of options available. I could use somethin
 <br><br></p>
 
 <p><a href="https://github.com/RythmStick/AMSITrigger">AMSITrigger</a> will identify all of the malicious strings in a powershell file, by repeatedly making calls to AMSI using AMSIScanBuffer, line by line. On receiving an AMSI_RESULT_DETECTED response code, the line will then be scrutinised to identify the individual triggers.</p>
+
+<p><br><br></p>
+
+<h3 id="v3-update">V3 Update:</h3>
+
+<p>In order to speed up the scanning process, AMSITrigger breaks a file up into smaller chunks. Being able to ignore whole chunks, reduces calls to AMSIScanBuffer but presents a few problems that can result in false-negatives ie. A clean result where you expected a trigger. <br><br>The first problem is where the signature length exceeds the chunk size. To cater for this I've included a ChunkSize parameter, which should be increased if you're getting an unexpected result. <br><br>The second problem is where a signature spans 2 consecutive chunks, which is more likely when you use smaller chunk sizes. To cater for this, I've added a maxSignatureLength parameter. This will assume that the final maxSignatureLength bytes in a chunk could be the start of truncated signature, and will prepend the next chunk with those bytes. </p>
+
 
 <p><br><br></p>
 
