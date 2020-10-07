@@ -1,0 +1,180 @@
+﻿<!doctype html>
+<html>
+  <head>
+    <title>Hunting for malicious strings using AmsiTrigger // RythmStick</title>
+    <meta charset="utf-8" />
+    <meta name="generator" content="Hugo 0.47.1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="RythmStick" />
+    <meta name="description" content="" />
+    <base href="https://www.rythmstick.net" />
+    <link rel="stylesheet" href="https://www.rythmstick.net/css/main.min.13eb48bb7c9a6423f893a6444070cabd7a257bb41b0ffe018d2d2142d741553b.css" />
+  </head>
+  <body>
+    <header class="app-header">
+      <a href="/"><img class="app-header-avatar" src="./me.png" /></a>
+      <h1>RythmStick</h1>
+      <p>Application Penetration Tester, Beginner Bug Bounty Hunter.</p>
+      <div class="app-header-social">
+        
+          <a target="_blank" href="https://github.com/RythmStick"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-github">
+  <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+</svg></a>
+        
+          <a target="_blank" href="https://twitter.com/_RythmStick"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-twitter">
+  <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+</svg></a>
+        
+      </div>
+    </header>
+    <main class="app-container">
+      
+  <article class="post">
+    <header class="post-header">
+      <h1 class ="post-title">Hunting for malicious strings using AmsiTrigger</h1>
+      <div class="post-meta">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
+  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line>
+</svg>
+          May 26, 2020
+        </div>
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-clock">
+  <circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline>
+</svg>
+          3 min read
+        </div></div>
+    </header>
+    <div class="post-content">
+      
+
+<p><br></p>
+
+<h3 id="introduction">Introduction</h3>
+
+<p>I recently came across a situation where some offensive powershell tools which I’ve used quite often, are now eventually being flagged as malicious. In this case it was Windows Defender, although AMSI (AntiMalware Scan  Interface) is agnostic of antimalware product so it could easily be something different.
+<br><br>
+In this situation, there’s a number of options available. I could use something like <a href="https://github.com/danielbohannon/Invoke-Obfuscation">Invoke-Obfuscation</a> to play around with functions/strings etc, I could do this manually using trial and error or I could use one of the AMSI <a href="https://github.com/rasta-mouse/AmsiScanBufferBypass">bypasses</a> that are available. Sometimes though, it would be just nice to know exactly what triggered it, which is why I wrote AMSITrigger.
+<br><br></p>
+
+<p><a href="https://github.com/RythmStick/AMSITrigger">AMSITrigger</a> will identify all of the malicious strings in a powershell file, by repeatedly making calls to AMSI using AMSIScanBuffer, line by line. On receiving an AMSI_RESULT_DETECTED response code, the line will then be scrutinised to identify the individual triggers.</p>
+
+<p><br><br></p>
+
+<h3 id="v2-update">V2 Update:</h3>
+
+<p>In order to speed up the scanning process, AMSITrigger breaks a file up into smaller chunks. Being able to ignore whole chunks, reduces calls to AMSIScanBuffer but presents a few problems that can result in false-negatives ie. A clean result where you expected a trigger. <br><br>The first problem is where the signature length exceeds the chunk size. To cater for this I've included a ChunkSize parameter, which should be increased if you're getting an unexpected result. <br><br>The second problem is where a signature spans 2 consecutive chunks, which is more likely when you use smaller chunk sizes. To cater for this, I've added a maxSignatureLength parameter. This will assume that the final maxSignatureLength bytes in a chunk could be the start of truncated signature, and in prepend the next chunk with those bytes. </p>
+
+<p>I&rsquo;ve also added an extra parameter to load the powershell directly from a URL, for 2 reasons:
+    It&rsquo;s not always possible to match your lab environment with your target environment. Maybe your signatures are not sync&rsquo;d up or maybe its difficult matching the EDRs.
+    Also - you&rsquo;ll probably be using fileless execution so there&rsquo;s no need to drop payloads unecessarily to disk as this may cause them to be removed by the EDR.</p>
+
+<p><br><br></p>
+
+<h3 id="v3-update">V3 Update:</h3>
+
+<p>I&rsquo;ve had to change the logic slightly so instead of scanning line by line, I&rsquo;m now using data chunks. This has made trigger identification more accurate with only a slight tradeoff in execution time.</p>
+
+<p>I&rsquo;ve also added an extra parameter to load the powershell directly from a URL, for 2 reasons:
+    It&rsquo;s not always possible to match your lab environment with your target environment. Maybe your signatures are not sync&rsquo;d up or maybe its difficult matching the EDRs.
+    Also - you&rsquo;ll probably be using fileless execution so there&rsquo;s no need to drop payloads unecessarily to disk as this may cause them to be removed by the EDR.</p>
+
+<p><br><br></p>
+
+<h3 id="usage">Usage:</h3>
+
+<pre><code>     _    __  __ ____ ___ _____     _
+    / \  |  \/  / ___|_ _|_   _| __(_) __ _  __ _  ___ _ __
+   / _ \ | |\/| \___ \| |  | || '__| |/ _` |/ _` |/ _ \ '__|
+  / ___ \| |  | |___) | |  | || |  | | (_| | (_| |  __/ |
+ /_/   \_\_|  |_|____/___| |_||_|  |_|\__, |\__, |\___|_|
+                                      |___/ |___/    v2
+
+
+@_RythmStick
+
+
+
+Usage:
+  -i, --inputfile=VALUE      Filename
+  -u, --url=VALUE        URL eg. https://10.1.1.1/Invoke-NinjaCopy.ps1
+  -f, --format=VALUE         Output Format:
+                               1 - Only show Triggers
+                               2 - Show Triggers with line numbers
+                               3 - Show Triggers inline with code
+                               4 - Show AMSI calls (xmas tree mode)
+  -m, --max=VALUE            Maximum Line Length (default 2048)
+  -h, -?, --help             Show Help
+</code></pre>
+
+<p><br><br></p>
+
+<h2 id="examples">Examples</h2>
+
+<h3 id="example-1-show-triggers-in-invoke-mimikatz-ps1-using-url">Example 1 - Show Triggers in Invoke-Phant0m.ps1 using URL</h3>
+
+<p><img src="demo0.png" alt="screenshot" /></p>
+
+<p><br><br></p>
+
+<h3 id="example-2-show-triggers-in-invoke-mimikatz-ps1-with-line-numbers">Example 2 - Show Triggers in Invoke-Mimikatz.ps1 with Line Numbers</h3>
+
+<p><img src="demo1.gif" alt="screenshot" /></p>
+
+<p><br><br></p>
+
+<h3 id="example-3-show-triggers-inline-with-code">Example 3 - Show Triggers inline with code</h3>
+
+<p><img src="demo2.gif" alt="screenshot" /></p>
+
+<p><br>
+<br>
+If you&rsquo;re curious to see how AMSITrigger works, run in Xmas Tree mode (-f=4) which will display exactly what is being sent to AMSI.
+Check out the GitHub <a href="https://github.com/RythmStick/AMSITrigger">Repo</a> for code.
+<br>
+<br></p>
+
+<p><br></p>
+
+<h3 id="todo">ToDo</h3>
+
+<p>AMSITrigger currently only works against Powershell files. I will look at extending this to VBScript, Java etc
+<br>
+<br></p>
+
+<h3 id="credits">Credits</h3>
+
+<p>Calling AMSI Scan functions:<br>
+<a href="https://medium.com/@two06/amsi-as-a-service-automating-av-evasion-2e2f54397ff9">https://medium.com/@two06/amsi-as-a-service-automating-av-evasion-2e2f54397ff9</a>
+<a href="https://stackoverflow.com/questions/40888849/windows-defender-antivirus-scan-from-c-sharp-accessviolation-exception">https://stackoverflow.com/questions/40888849/windows-defender-antivirus-scan-from-c-sharp-accessviolation-exception</a>.
+Thanks to <a href="https://twitter.com/ShitSecure">S3cur3Th1sSh1t</a> for details on multi-line signatures.
+<br></p>
+
+    </div>
+    <br><br><br><br>
+    <div id="disqus_thread"></div>
+<script type="application/javascript">
+    var disqus_config = function () {
+    
+    
+    
+    };
+    (function() {
+        if (["localhost", "127.0.0.1"].indexOf(window.location.hostname) != -1) {
+            document.getElementById('disqus_thread').innerHTML = 'Disqus comments not available by default when the website is previewed locally.';
+            return;
+        }
+        var d = document, s = d.createElement('script'); s.async = true;
+        s.src = '//' + "rythmstick" + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+  </article>
+
+    </main>
+  </body>
+</html>
