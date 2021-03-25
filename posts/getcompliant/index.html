@@ -31,7 +31,7 @@
       
   <article class="post">
     <header class="post-header">
-      <h1 class ="post-title">Extract passwords that meet Complexity rules</h1>
+      <h1 class ="post-title">Extract passwords that meet custom complexity rules</h1>
       <div class="post-meta">
         <div>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-calendar">
@@ -55,7 +55,7 @@
 
 <p>I regularly use dictionary files in password attacks, sprays etc, but I often find that my target network/application is enforcing some kind of password complexity policy. What this means if you're using something like rockyou.txt, is that over 90% of those passwords are not going to be compliant. 
 <br><br>
-I've looked for a tool which will let me extract passwords that meet a set of compliancy rules, but I couldn't find anything. Maybe I need to improve my googling skills.
+I've looked for a tool which will let me extract passwords that meet a set of complexity rules, but I couldn't find anything. Maybe I need to improve my googling skills.
 In the end, I decided to write a simple tool myself. 
 <br><br>
 </p>
@@ -92,17 +92,13 @@ Usage:
 
 <h2 id="examples">Examples</h2>
 
-<h3 id="example-1-extract-from-rockyou">Example - Extract passwords from rockyou.txt that contain 3 out of the following: Uppercase,Lowercase, Digits, Symbols, with a minimum length of 7 characters.</h3>
-
+<h3 id="example-1-extract-from-rockyou">Extract passwords from rockyou.txt that contain 3 out of the following sets: Uppercase, Lowercase, Digits and Symbols, with a minimum length of 7 characters.</h3>
+<br>
 <p><img src="demo1-getcompliant.png" alt="screenshot" /></p>
 
 <p><br><br></p>
-
-<br>
 Check out the GitHub <a href="https://github.com/RythmStick/GetCompliant">Repo</a> for code.
-<br>
-<br></p>
-
+</p>
 
     </div>
     <br><br><br><br>
