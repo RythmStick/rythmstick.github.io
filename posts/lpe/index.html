@@ -60,19 +60,19 @@
 By default, Windows allows any user to create new folders in the c:\ root, so I created that folder and launched a basic scan against the host. This time the Nessus Agent attempted to open a c:\bin\netstat file (it uses netstat to enumerate open local ports on the host during a credentialed scan). The Nessus Agent does this in the context of NT AUTHORITY\SYSTEM, so it was feasible that any 'netstat' payload I dropped in here may also get executed in that context.
 </p>
 
-<p><img src="lpenessus-procmon2.png" alt="screenshot" /></p>
+<p><img src="lpenessus-procmon2.png" alt="screenshot2" /></p>
 
 <p>I compiled the following POC and dropped it in the c:\bin folder as netstat (no extension).
 
-<p><img src="lpenessus-poc.png alt="screenshot" /></p>
+<p><img src="lpenessus-poc.png alt="screenshot3" /></p>
  
 <p>The next time a scan was launched, the following file was created: </p>
 
-<p><img src="lpenessus-info.png alt="screenshot" /></p>
+<p><img src="lpenessus-info.png alt="screenshot4" /></p>
 
 <p>Along with a new Local Administrator account:</p>
 
-<p><img src="lpe-nessus-la.png" alt="screenshot" /></p>
+<p><img src="lpenessus-la.png" alt="screenshot5" /></p>
 
 
 
