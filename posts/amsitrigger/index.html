@@ -62,6 +62,13 @@ In this situation, there’s a number of options available. I could use somethin
 
 <p><br><br></p>
 
+<h3 id="v4-update">V4 Update:</h3>
+
+<p>It seems that MS Defender no longer flags "AMSIScanBuffer" as being malicious, which is what I used to test that it was enabled. This has been replace with "invoke-mimikatz" which does still get flagged. <br>Removed the Nuget package dependiences.<br>Added a -p parameter to pause the display after a number of triggers. This is because piping through more messed up the display.</p>
+
+
+<p><br><br></p>
+
 <h3 id="v3-update">V3 Update:</h3>
 
 <p>In order to speed up the scanning process, AMSITrigger breaks a file up into smaller chunks. Being able to ignore whole chunks, reduces calls to AMSIScanBuffer but presents a few problems that can result in false-negatives ie. A clean result where you expected a trigger. <br><br>The first problem is where the signature length exceeds the chunk size. To cater for this I've included a ChunkSize parameter, which should be increased if you're getting an unexpected result. <br><br>The second problem is where a signature spans 2 consecutive chunks, which is more likely when you use smaller chunk sizes. To cater for this, I've added a maxSignatureLength parameter. This will assume that the final maxSignatureLength bytes in a chunk could be the start of a truncated signature, and will prepend the next chunk with those bytes. </p>
@@ -94,19 +101,20 @@ In this situation, there’s a number of options available. I could use somethin
 
 
 Usage:
-  -i, --inputfile=VALUE      Filename
-  -u, --url=VALUE            URL eg. https://10.1.1.1/Invoke-NinjaCopy.ps1
-  -f, --format=VALUE         Output Format:
+  -i, -inputfile=VALUE      Filename
+  -u, -url=VALUE            URL eg. https://10.1.1.1/Invoke-NinjaCopy.ps1
+  -f, -format=VALUE         Output Format:
                                1 - Only show Triggers
                                2 - Show Triggers with line numbers
                                3 - Show Triggers inline with code
                                4 - Show AMSI calls (xmas tree mode)
-  -d, --debug                Show debug info
-  -m, --maxsiglength=VALUE   maximum signature Length to cater for,
+  -d, -debug                Show debug info
+  -p, -pause=VALUE          Pause display after every VALUE triggers
+  -m, -maxsiglength=VALUE   maximum signature Length to cater for,
                                default=2048
-  -c, --chunksize=VALUE      Chunk size to send to AMSIScanBuffer,
+  -c, -chunksize=VALUE      Chunk size to send to AMSIScanBuffer,
                                default=4096
-  -h, -?, --help             Show Help
+  -h, -?, -help             Show Help
 </code></pre>
 
 <p><br><br></p>
